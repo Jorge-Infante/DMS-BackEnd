@@ -6,6 +6,7 @@ from django.shortcuts import render
 from rest_framework.generics import (
     CreateAPIView,ListAPIView, RetrieveUpdateAPIView, DestroyAPIView
 )
+from rest_framework import viewsets, filters
 # Importación modelo tarea
 from . models import Movie
 
@@ -34,3 +35,12 @@ class MovieDeleteView(DestroyAPIView):
     """Delete a movie"""
     serializer_class = MovieSerializer
     queryset= Movie.objects.all()
+
+class MovieFilterViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+
+    # Sistema de filtros
+    filter_backends = [filters.SearchFilter]
+
+    search_fields = ['title', 'subtitle']
